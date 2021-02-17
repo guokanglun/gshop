@@ -8,6 +8,7 @@ export default {
     categoryArr:[],  // 食品分类数组
     shops:[],  // 商家数组
     userInfo: {},  // 用户信息
+    searchShops: [], // 搜索商品列表
 
     // mock 相关
     shopGoods:[],  // 点餐

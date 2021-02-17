@@ -1166,7 +1166,7 @@ this.$refs.fl.toggleShow()  // 获取父组件元素可以直接调用子组件�
 
 原因：vue dom 异步更新
 
-解决： 使用vue API nextTick   将回调延迟到dom更新之后
+解决：  watch + nextTick   callback + nextTick 将回调延迟到dom更新之后
 
 
 
@@ -1192,6 +1192,7 @@ this.$set
 
 1. 必须加入配置项 click:true , 否则里面的点击事件不起作用（购物车里的商品数量变化）
 2.  vue dom 异步更新  ，  必须加上 nextTick  才有效果
+3. better-scroll 必须要有内外两层，内层高度大于外层高度
 
 
 
@@ -1209,15 +1210,29 @@ watch + nextTick
 
 callback + nextTick
 
-
-
-
-
 ##### 9.9 路由跳转
 
 replace 模式跳转
 
 ```html
 <router-link to="/shop/shopGoods" replace>点餐</router-link>
+```
+
+
+
+##### 9.10 连续点击当前路由多次报错
+
+原因： vue router ≥ v3.1 后 ，回调形式改成 promise api 了，返回的是 promise，如果没有捕获到错误，控制台始终会出现如上图的警告。
+
+```js
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+};
+
+const originalPush1 = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location) {
+  return originalPush1.call(this, location).catch(err => err)
+};
 ```
 

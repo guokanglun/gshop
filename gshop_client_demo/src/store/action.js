@@ -9,7 +9,8 @@ import {
     reqLogout,
     reqGoods,
     reqInfo,
-    reqRatings
+    reqRatings,
+    reqSearchShops
 } from '../api'
 
 export default {
@@ -106,6 +107,16 @@ export default {
     // 清空购物车
     clearCart({commit}){
         commit('resetCart')
+    },
+
+    async reqGetSearchShops ({commit, state}, keyword) {
+        const {latitude, longitude} = state;
+        const geohash = latitude + ',' + longitude;
+        const result = await reqSearchShops(geohash, keyword);
+        // debugger
+        if (result.code === 0) {
+            commit ('getSearchShops', result.data)
+        }
     }
 
 }

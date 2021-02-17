@@ -15,10 +15,14 @@
                 </span>
             </template>
         </HeaderTop>
-        <!--首页导航-->
-        <Nav></Nav>
-        <!--首页附近商家-->
-        <ShopList></ShopList>
+        <div class="msite-content">
+            <div>
+                <!--首页导航-->
+                <Nav></Nav>
+                <!--首页附近商家-->
+                <ShopList></ShopList>
+            </div>
+        </div>
     </section>
 
 </template>
@@ -28,6 +32,7 @@
     import HeaderTop from "../../components/headerTop/HeaderTop";
     import Nav from "../../components/nav/Nav";
     import ShopList from "../../components/shoplist/ShopList";
+    import BScroll from 'better-scroll'
     export default {
         name: "Msite",
         components:{
@@ -39,7 +44,10 @@
         },
         mounted(){
             // 触发action， 获取地址信息
-            this.$store.dispatch('getAddress')
+            this.$store.dispatch('getAddress');
+            new BScroll('.msite-content', {
+                click: true
+            })
         }
     }
 </script>
@@ -47,4 +55,6 @@
 <style scoped lang="stylus">
     .msite  //首页
         width 100%
+        .msite-content
+            height: 576px
 </style>

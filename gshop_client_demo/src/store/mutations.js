@@ -63,5 +63,9 @@ export default {
             good.count = 0;
         });
         state.cartGoods = []
+    },
+
+    getSearchShops (state, searchShops) {
+        state.searchShops = searchShops
     }
 }

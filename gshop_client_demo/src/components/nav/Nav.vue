@@ -5,7 +5,7 @@
                 <div class="swiper-slide" v-for="(categorys, index) in categorysArr" :key="index">
                     <a href="javascript:" class="link_to_food" v-for="(category, index) in categorys" :key="index">
                         <div class="food_container">
-                            <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3772057134,2720637882&fm=11&gp=0.jpg">
+                            <img :src="'https://fuss10.elemecdn.com' + category.image_url">
                         </div>
                         <span>{{  category.title }}</span>
                     </a>
