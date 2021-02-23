@@ -5,7 +5,7 @@
 
 import axios from 'axios'
 
-export const ajax = (url, data={}, type='GET') => {
+const ajax = (url, data={}, type='GET') => {
     return new Promise((resolve, reject)=>{
         let promise;
         if(type==='GET'){
@@ -21,3 +21,5 @@ export const ajax = (url, data={}, type='GET') => {
         })
     })
 };
+
+export default ajax;

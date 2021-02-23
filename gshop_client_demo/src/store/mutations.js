@@ -4,7 +4,7 @@
 import Vue from 'vue'
 
 export default {
-    // 接受地址
+    // 获取地址信息
     receive_address(state, address){
         state.address = address
     },
@@ -42,6 +42,7 @@ export default {
     incrementCount(state, food){
         // debugger
         if(!food.count){
+            // 给已有数据绑定的数据添加新的属性
             Vue.set(food, 'count', 1);
             // 添加到购物车
             state.cartGoods.push(food)
@@ -50,7 +51,9 @@ export default {
         }
     },
     decrementCount(state, food){
-        food.count --;
+        if (food.count) {
+            food.count --
+        }
         if(food.count <= 0){
             food.count = 0;
             state.cartGoods.splice(state.cartGoods.indexOf(food), 1)

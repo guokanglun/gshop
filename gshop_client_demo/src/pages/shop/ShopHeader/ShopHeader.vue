@@ -1,10 +1,12 @@
 <template>
     <div class="shop-header">
+        <!-- 背景图 -->
         <nav class="shop-nav" :style="{backgroundImage: `url(${shopInfo.bgImg})`}">
             <a class="back" @click="$router.back()">
                 <i class="iconfont icon-arrow_left"></i>
             </a>
         </nav>
+        <!-- 头部内容 -->
         <div class="shop-content" @click="toggleShopShow">
             <img class="content-image" :src="shopInfo.avatar">
             <div class="header-content">
@@ -26,21 +28,23 @@
                 </div>
             </div>
         </div>
-
+        <!-- 折扣 -->
         <div class="shop-header-discounts" v-if="shopInfo.supports" @click="toggleSupportShow">
             <div class="discounts-left">
                 <div class="activity" :class="supportClasses[shopInfo.supports[0].type]">
-          <span class="content-tag">
-            <span class="mini-tag">{{shopInfo.supports[0].name}}</span>
-          </span>
-                    <span class="activity-content ellipsis">{{shopInfo.supports[0].content}}</span>
+                    <span class="content-tag">
+                        <span class="mini-tag">{{shopInfo.supports[0].name}}</span>
+                    </span>
+                    <span class="activity-content ellipsis">
+                        {{shopInfo.supports[0].content}}
+                    </span>
                 </div>
             </div>
             <div class="discounts-right">
                 {{shopInfo.supports.length}}个优惠
             </div>
         </div>
-
+        <!-- 隐藏的商家信息 -->
         <transition name="fade">
             <div class="shop-brief-modal" v-show="shopShow">
                 <div class="brief-modal-content">
@@ -85,7 +89,7 @@
                 <div class="brief-modal-cover"></div>
             </div>
         </transition>
-
+        <!-- 隐藏的优惠活动 -->
         <transition name="fade">
             <div class="activity-sheet" v-show="supportShow">
                 <div class="activity-sheet-content">

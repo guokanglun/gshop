@@ -19,6 +19,7 @@
                         <h1 class="title">{{ item.name }}</h1>
                         <ul>
                             <li class="food-item bottom-border-1px" v-for="(item1, index) in item.foods"
+                                :key="index"
                             @click="showFood(item1)"
                             >
                                 <div class="icon">
@@ -71,26 +72,26 @@
             // 计算属性计算当前索引
             currentIndex(){
                 const {scrollY, tops} = this;
-                const index = tops.findIndex((top, index) => {
+                return tops.findIndex((top, index) => {
                     return scrollY >= top && scrollY < tops[index + 1]
                 });
-
-                return index;
             }
         },
         mounted(){
             // 以回调函数形式，在获取数据之后创建better-scroll
             this.$store.dispatch('getGoods', ()=>{
                 this.$nextTick(()=>{  // 数据更新后显示
-                    let bs1 = new BetterScroll('.menu-wrapper', {
+                    // 左侧menu滑动
+                    new BetterScroll('.menu-wrapper', {
                         click:true  // 允许点击
                     });
+                    //  右侧food滑动
                     this.bs2 = new BetterScroll('.foods-wrapper', {
                         probeType: 3 ,  // 决定是否派发 scroll 事件
                         click:true  // 允许点击
                     });
 
-                    // 绑定滚动监听事件
+                    // 绑定滚动监听事件，收集scrollY
                     this.bs2.on('scroll', ({x, y})=>{
                         this.scrollY = Math.abs(y);
                     });
@@ -110,12 +111,11 @@
         },
         methods:{
             clickMenu(index){
-                this.bs2.scrollTo(0, -this.tops[index], 300)
+                this.bs2.scrollTo(0, -this.tops[index], 0)
             },
             showFood(food){
                 this.food = food;
                 this.$refs.fl.toggleShow()
-                // this.isShow = true
             }
         },
         components:{

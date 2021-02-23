@@ -1,6 +1,6 @@
 <template>
     <div class="cartcontrol">
-        <transition class="move">
+        <transition name="move">
             <div class="iconfont icon-remove_circle_outline" @click.stop="updateCount(false)" v-if="food.count"></div>
         </transition>
         <div class="cart-count" v-if="food.count">{{ food.count || 1 }}</div>
@@ -43,7 +43,7 @@
             &.move-enter-active, &.move-leave-active
                 transition all 1s
             &.move-enter, &.move-leave-to
-                opacity 0
+                opacity: 0;
                 transform translateX(15px) rotate(180deg)
         .cart-count
             display: inline-block

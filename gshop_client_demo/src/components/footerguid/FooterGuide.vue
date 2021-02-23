@@ -1,9 +1,9 @@
 <template>
     <footer class="footer_guide border-1px">
         <a href="javascript:;" class="guide_item" :class="{on: $route.path === '/msite'}" @click="goto('/msite')">
-      <span class="item_icon">
-        <i class="iconfont icon-waimai"></i>
-      </span>
+          <span class="item_icon">
+            <i class="iconfont icon-waimai"></i>
+          </span>
             <span>外卖</span>
         </a>
         <a href="javascript:;" class="guide_item" :class="{on: $route.path === '/search'}" @click="goto('/search')">
@@ -30,8 +30,8 @@
 <script>
     export default {
         name: "FooterGuide",
-        methods:{
-            goto(path){
+        methods: {
+            goto (path) {
                 this.$router.replace(path)
             }
         }
@@ -40,7 +40,7 @@
 
 <style scoped lang="stylus">
     @import '../../common/stylus/mixin.styl'
-    .footer_guide  //footer
+    .footer_guide //footer
         top-border-1px(#e4e4e4)
         position fixed
         z-index 100
@@ -51,6 +51,7 @@
         width 100%
         height 50px
         display flex
+
         .guide_item
             display flex
             flex 1
@@ -59,12 +60,15 @@
             align-items center
             margin 5px
             color #999999
+
             &.on
                 color #02a774
+
             span
                 font-size 12px
                 margin-top 2px
                 margin-bottom 2px
+
                 .iconfont
                     font-size 22px
 </style>

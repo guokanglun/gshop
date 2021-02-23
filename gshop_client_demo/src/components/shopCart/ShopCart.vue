@@ -4,15 +4,20 @@
       <div class="content">
         <div class="content-left">
           <div class="logo-wrapper">
-            <div class="logo highlight" @click="showCartList">
-              <i class="iconfont icon-shopping_cart" ></i>
+            <div class="logo" :class="{highlight: cartGoods.length>0}" @click="toggleShow">
+              <i class="iconfont icon-shopping_cart"></i>
             </div>
-            <div class="num" v-if="totalCount">{{ totalCount }}</div>
+            <div class="num" v-if="totalCount !== 0">  {{ totalCount }} </div>
           </div>
+          <div class="price" >￥{{ totalPrice }}</div>
+          <div class="desc">另需配送费￥{{ shopInfo.deliveryPrice }}元</div>
         </div>
         <div class="content-right">
-          <div class="pay">
-            总价格：{{  totalPrice }}
+          <div class="pay" :class="{enough:totalPrices==='去结算'}" v-if="totalPrices !=='去结算'">
+            {{ totalPrices }}
+          </div>
+          <div class="pay" :class="{enough:totalPrices==='去结算'}" v-else @click="pay">
+            {{ totalPrices }}
           </div>
         </div>
       </div>
@@ -20,7 +25,7 @@
         <div class="shopcart-list" v-show="isShow">
           <div class="list-header">
             <h1 class="title">购物车</h1>
-            <span class="empty" @click.stop="clearCart">清空</span>
+            <span class="empty" @click="clearCart">清空</span>
           </div>
           <div class="list-content">
             <ul>
@@ -28,7 +33,7 @@
                 <span class="name">{{ food.name }}</span>
                 <div class="price"><span>￥{{ food.price }}</span></div>
                 <div class="cartcontrol-wrapper">
-                  <CartControll :food="food"/>
+                  <CartControll :food="food"></CartControll>
                 </div>
               </li>
             </ul>
@@ -37,41 +42,64 @@
       </transition>
 
     </div>
-    <div class="list-mask" v-if="isShow" @click="isShow = false"></div>
+    <div class="list-mask" v-show="isShow" @click="isShow=false"></div>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapState} from 'vuex'
   import CartControll from "../cartControll/CartControll";
-  import BetterScroll from 'better-scroll'
+  import {mapState, mapGetters} from 'vuex'
+  import { MessageBox } from 'mint-ui';
+  import BScroll from 'better-scroll'
   export default {
-    name:'ShopCart',
-    data(){
-      return{
-        isShow:false
+    data () {
+      return {
+        isShow: false
       }
     },
-    components:{
-      CartControll
-    },
-    computed:{
+    computed: {
+      ...mapState(['cartGoods',  'shopInfo']),
       ...mapGetters(['totalCount', 'totalPrice']),
-      ...mapState(['cartGoods'])
+      // 总价格
+      totalPrices () {
+        const {totalPrice, shopInfo, cartGoods} = this;
+        // 起送价
+        const {minPrice} = shopInfo;
+        // 配送费
+        const {deliveryPrice} = shopInfo;
+
+        if (cartGoods.length === 0) {
+          return shopInfo.minPrice + '元起送'
+        }
+
+        if (totalPrice + deliveryPrice < minPrice) {
+          return `还差${minPrice - totalPrice - deliveryPrice}元起送`
+        }
+
+        return '去结算'
+
+      }
     },
-    methods:{
-      showCartList(){
+    methods: {
+      clearCart () {
+        this.$store.dispatch('clearCart');
+        this.isShow = false;
+      },
+      // 付款
+      pay () {
+        MessageBox('提示', '操作成功');
+      },
+      toggleShow () {
         this.isShow = !this.isShow;
         this.$nextTick(()=>{
-          new BetterScroll('.list-content', {
-            click:true
+          let bs = new BScroll('.list-content', {
+            click: true
           })
-        })
-      },
-      clearCart(){
-        this.$store.dispatch('clearCart');
-        this.isShow = false
+        });
       }
+    },
+    components: {
+      CartControll
     }
   }
 </script>
@@ -157,11 +185,10 @@
           height 48px
           line-height 48px
           text-align center
-          font-size 12px
+          font-size 16px
           font-weight 700
           color #fff
-          &.not-enough
-            background #2b333b
+          background-color grey
           &.enough
             background #00b43c
             color #fff

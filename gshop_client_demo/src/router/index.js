@@ -10,7 +10,7 @@ import ShopGoods from "../pages/shop/shopGoods/ShopGoods";
 import ShopInfo from "../pages/shop/shopInfo/ShopInfo";
 import ShopRatings from "../pages/shop/shopRatings/ShopRatings";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -57,20 +57,20 @@ const routes = [
     component: Shop,
     children:[
       {
-        path: '/shop/shopRatings',
+        path: 'shopRatings',
         component:ShopRatings
       },
       {
-        path: '/shop/shopInfo',
+        path: 'shopInfo',
         component:ShopInfo
       },
       {
-        path: '/shop/shopGoods',
+        path: 'shopGoods',
         component:ShopGoods
       },
       {
         path: '/shop',
-        redirect:'/shop/shopGoods'
+        redirect:'shopGoods'
       }
     ]
   },

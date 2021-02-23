@@ -1,7 +1,7 @@
 /*
     封装n个请求接口
  */
-import {ajax} from './axios'
+import ajax from './axios'
 
 // 根据经纬度获取位置详情
 export const reqAddress = (geohash)  => ajax(`/api/position/${geohash}`);

@@ -30,26 +30,24 @@
           ...mapState(['categoryArr']),
             // 计算属性计算出一个二维数组
             categorysArr(){
+              // 所有分类数据
                 const {categoryArr} = this;
-                // 外层
-                const arr = [];
-                // 内层
-                let minArr = [];
-                categoryArr.forEach((c)=>{
-                    if(minArr.length === 8){
-                        minArr = []
-                    }
-                    if(minArr.length === 0){
-                        arr.push(minArr);
-                    }
-                    minArr.push(c);
+                // 定义需要返回的数组
+                let arr = [];
+                categoryArr.forEach((cate, index) =>{
+                    // 计算页数，每页8个
+                    const ids = Math.floor(index / 8); // 0/1
+                    // 定义二维数组
+                    if (!arr[ids])
+                        arr[ids] = [];
+                    arr[ids].push(cate)
                 });
-                return arr
+                return arr;
             }
         },
         watch: {
             categoryArr(value){  // 监视categoryArr数据变化
-                // nextTick 将回调延迟到下次 DOM 更新循环之后执行
+                // nextTick 将回调延迟到界面更新之后
                 this.$nextTick(()=>{
                     new Swiper('.swiper-container',{
                         loop:true,

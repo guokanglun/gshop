@@ -2,16 +2,15 @@
     <section class="msite">
         <!--首页头部-->
         <HeaderTop :title="address.address">
-            <template  v-slot:left>
+            <template #left>
                 <router-link to="/search" class="header_search">
                 <i class="iconfont icon-sousuo"></i>
               </router-link>
             </template>
-
-            <template v-slot:right>
+            <template #right>
                 <span class="header_login">
-                    <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
-                    <span class="iconfont icon-person" v-else></span>
+                    <span class="header_login_text" v-if="!userInfo._id" @click="$router.push('/login')">登录|注册</span>
+                    <span class="iconfont icon-person" v-else @click="$router.push('/profile')"></span>
                 </span>
             </template>
         </HeaderTop>

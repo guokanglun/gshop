@@ -35,7 +35,6 @@
                     scs.push('off')
                 }
                 return scs;
-
             }
         }
     }

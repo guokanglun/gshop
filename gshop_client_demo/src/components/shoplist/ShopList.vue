@@ -11,7 +11,7 @@
                 >
                     <a>
                         <div class="shop_left">
-                            <img class="shop_img" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg10.360buyimg.com%2Fn2%2Fjfs%2Ft1%2F133529%2F32%2F18217%2F127544%2F5fc81db9Ed57c38da%2Fec1112463587e4c2.jpg%21q90&refer=http%3A%2F%2Fimg10.360buyimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1612708421&t=2eb179362d72ab07cefee12325966161">
+                            <img class="shop_img" src="./images/d41b04d520d445dc5de42dae9a384jpeg.png">
                         </div>
                         <div class="shop_right">
                             <section class="shop_detail_header">

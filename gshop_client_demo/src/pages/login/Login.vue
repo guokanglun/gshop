@@ -12,10 +12,10 @@
                 <form @submit.prevent="login">
                     <div :class="{on:longinWay}">
                         <section class="login_message">
-                            <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+                            <input type="tel" maxlength="11"  placeholder="手机号" v-model="phone">
                             <button :disabled="!isRight" class="get_verification" :class="{right_phone: isRight}"
                             @click.prevent="getCode"
-                            >{{ isCompute?`已发送${computedTime}s`:'获取验证码' }}</button>
+                            >{{ computedTime>0 ? `已发送${computedTime}s`:'获取验证码' }}</button>
                         </section>
                         <section class="login_verification">
                             <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
@@ -39,7 +39,7 @@
                                 </div>
                             </section>
                             <section class="login_message">
-                                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+                                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha" ref="captcha" >
                                 <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha"
                                 @click="getCaptcha" ref="captcha"
                                 >
@@ -54,26 +54,23 @@
                 <i class="iconfont icon-jiantou2"></i>
             </a>
         </div>
-        <AlertTip  :alertText="alertText" @closeTip="closeTip" v-show="isAlert"/>
+        <AlertTip :alertText="alertText" @closeTip="closeTip" v-show="isAlert"/>
     </div>
 </template>
-
-
 
 <script>
     import AlertTip from "../../components/alertTip/AlertTip";
     import {reqPhoneLogin, reqUserPwdLogin, reqSendCode} from '../../api'
     export default {
         name: "Login",
-        components:{
+        components: {
           AlertTip
         },
-        data(){
-            return{
+        data () {
+            return {
                 longinWay: true,  // true代表短信登录  false代表密码登录
                 phone: '',  //  手机号
-                computedTime: 30,  // 倒计时
-                isCompute: false,  // 是否启动倒计时
+                computedTime: 0,  // 倒计时
                 pwd: '', // 密码
                 showPwd: false, // 是否显示密码
                 code: '',  // 短信验证码
@@ -83,29 +80,29 @@
                 alertText: '' // 弹窗内容
             }
         },
-        computed:{
-            isRight(){
+        computed: {
+            isRight () {
                 return /1\d{10}/.test(this.phone)
             }
         },
-        methods:{
+        methods: {
             // 点击获取短信验证码
-            async getCode(){
-                if(!this.isCompute){
-                    this.isCompute = true;
+            async getCode () {
+                if(this.computedTime === 0){
                     this.computedTime = 30;
                     clearInterval(this.timer);
                     this.timer = setInterval(()=>{
                         this.computedTime --;
                         if(this.computedTime <= 0){
                             clearInterval(this.timer);
-                            this.isCompute = false
+                            this.computedTime = 0;
                         }
                     }, 1000);
+                    // 发送短信验证码
                     const result = await reqSendCode(this.phone);
                     if(result.code === 1){
                         this.showAlert(result.msg);
-                        this.isCompute = false;
+                        this.computedTime = 0;
                         clearInterval(this.timer)
                     }else{
                         this.showAlert('短信发送成功')
@@ -114,44 +111,29 @@
             },
             // 登录
             async login(){
-                if(this.longinWay){  // 短信登录
+                if (this.longinWay) {  // 短信登录
                     const {phone, code, isRight} = this;
-                    if(!isRight){
-                        this.showAlert('手机号格式不正确');
-                        return
-                    }
-                    if(!code){
-                        this.showAlert('验证码必须输入');
-                        return
-                    }
-                    // 短信登录
+                    if(!isRight) return this.showAlert('手机号格式不正确');
+                    if(!code) return this.showAlert('验证码必须输入');
+
+                    // 发送ajax请求短信登录
                     const result = await reqPhoneLogin(phone, code);
                     if(result.code === 1){
                         this.showAlert(result.msg)
-                    }else{
+                    } else {
                         // 登录成功
                         this.$store.dispatch('saveUser', result.data);
                         this.$router.replace('/profile')
                     }
-                }else{  // 用户名登录
+                }else{  // 用户名密码登录
                     const {name, pwd, captcha} = this;
-                    if(!name){
-                        this.showAlert('请输入用户名');
-                        return
-                    }
-                    if(!pwd){
-                        this.showAlert('请输入密码');
-                        return
-                    }
-
-                    if(!captcha){
-                        this.showAlert('请输入验证码');
-                        return
-                    }
+                    if(!name) return this.showAlert('请输入用户名');
+                    if(!pwd) return this.showAlert('请输入密码');
+                    if(!captcha) return this.showAlert('请输入验证码');
 
                     // 用户名 密码登录
                     const result = await reqUserPwdLogin(name, pwd, captcha);
-                    console.log(result)
+                    // console.log(name, pwd, captcha);
                     if(result.code === 1){
                         this.showAlert(result.msg);
                         this.getCaptcha()
@@ -167,7 +149,6 @@
             closeTip(){
                 this.isAlert = false;
                 this.alertText = '';
-                this.isCompute = false;
             },
             // 显示弹窗
             showAlert(alertText){
@@ -177,7 +158,7 @@
 
             // 获取新的图形验证码
             getCaptcha(){
-                this.$refs.captcha.src = 'http://localhost:4000/captcha'
+                this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
             }
         }
     }

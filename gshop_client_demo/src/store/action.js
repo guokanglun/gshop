@@ -24,7 +24,7 @@ export default {
         }
     },
     // 异步获取食品分类
-    async getFoodList({commit, state}){
+    async getFoodList({commit}){
         const result = await reqFoodList();
         if(result.code == 0){
             const categoryArr = result.data;
@@ -41,7 +41,7 @@ export default {
         }
     },
 
-    // 保存用户信息
+    // 同步保存用户信息
     saveUser({commit}, user) {
         commit('saveUserInfo', user)
     },
@@ -63,7 +63,6 @@ export default {
         if(result.code === 0){
             commit('deleteUser')
         }
-
     },
 
     // mock
@@ -73,7 +72,7 @@ export default {
         if(result.code === 0){
             const {data}  = result;
             commit('receiveGood', data);
-            callback()
+            callback && callback()
         }
     },
     // 异步获取评价数据

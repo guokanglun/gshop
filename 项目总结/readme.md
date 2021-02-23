@@ -7,7 +7,7 @@
 
 ### 2. 技术选型
 
-1. 前台数据处理：vue，vue-router,  vuex,  mint-ui,  vue-lazyload, vue-scroller,  better-scroll, swiper, moment, date-fns
+1. 前台数据处理：vue，vue-router,  vuex,  mint-ui,  vue-lazyload,  better-scroll, swiper, moment, date-fns
 2.  前后台交互：mockjs, postman, axios
 3. 模块化：es6, babel
 4. 项目构建/工程化：webpack,  vue-cli, eslint
@@ -82,8 +82,6 @@ vue create gshop
 ```
 npm start
 ```
-
-
 
 生产环境运行
 
@@ -1235,4 +1233,6 @@ VueRouter.prototype.replace = function replace(location) {
   return originalPush1.call(this, location).catch(err => err)
 };
 ```
+
+
 

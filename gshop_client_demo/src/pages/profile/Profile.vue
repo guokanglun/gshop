@@ -2,7 +2,7 @@
     <section class="profile">
         <HeaderTop title="我的"></HeaderTop>
         <section class="profile-number">
-            <router-link :to="userInfo._id ?'/userinfo':'/login'" href="javascript:" class="profile-link">
+            <router-link :to="userInfo._id ?'/msite':'/login'" href="javascript:" class="profile-link">
                 <div class="profile_image">
                     <i class="iconfont icon-person"></i>
                 </div>
@@ -12,7 +12,7 @@
                 <span class="user-icon">
                   <i class="iconfont icon-shouji icon-mobile"></i>
                 </span>
-                        <span class="icon-mobile-number">{{ userInfo.phone ?userInfo.phone:'暂无绑定手机号' }}</span>
+                        <span class="icon-mobile-number">{{ userInfo.phone || '暂无绑定手机号' }}</span>
                     </p>
                 </div>
                 <span class="arrow">
@@ -90,13 +90,14 @@
         </section>
         <section class="profile_my_order border-1px">
         <!-- 退出登录 -->
-            <div class="btn" @click="logout"> 退出登录 </div>
+            <div class="btn" @click="logout" v-if="userInfo._id"> 退出登录 </div>
         </section>
     </section>
 </template>
 
 <script>
     import {mapState} from 'vuex'
+    import { MessageBox } from 'mint-ui';
     import AlertTip from "../../components/alertTip/AlertTip";
     import HeaderTop from "../../components/headerTop/HeaderTop";
     export default {
@@ -109,7 +110,12 @@
         },
         methods:{
             logout(){
-                this.$store.dispatch('Logout')
+                MessageBox.confirm('确定退出登录吗?').then(action => {
+                    this.$store.dispatch('Logout')
+                }).catch(action => {
+                    console.log(action);
+                });
+
             }
         }
     }

@@ -12,6 +12,7 @@
     "better-scroll": "^2.1.1",
     "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
+    "mint-ui": "^2.2.13",
     "mockjs": "^1.1.0",
     "swiper": "^4.5.1",
     "vue": "^2.6.11",
@@ -24,6 +25,7 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "babel-plugin-component": "^1.1.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.6.11"
